@@ -1,156 +1,50 @@
-function validation(){
+var myArray = [1,2,3,4,5,6,7,8,9,0]
 
-  repeatNumber = value.split('')
+shuffle = function(o){ //v1.0
+    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
 
-  for(var i=0; i < repeatNumber.length; i++){
-    var repeat = repeatNumber.indexOf( repeatNumber[i] ,  i+1)
-    if (repeat != -1){
-      console.log("el numero " + repeatNumber[i] + " esta repetido ")
-    }else{
-      $('.table').append(function(){
-        return "<td>"  + value +"";
-      });
-      $(this).val('');
-    }
-  }
-}
+var numRandom = shuffle(myArray).slice(0,4).toString().replace(/,/g, '');
 
+console.log (numRandom)
 
 $(document).ready(function(){
-  var number = 999 + Math.floor(Math.random() * 9000);
-  console.log(number)
 
     $('input').keyup(function(e){
 
-      if(e.keyCode==13){
+        if(e.keyCode==13){
 
         var value = $('input').val()
-        console.log(value)
 
         var checkNumber = isNaN(value)
-        console.log("no es un número")
 
         var differentLength = value != 4
 
-  // no repeat number in input
-        var validation = function(){
+        var repeat = function(){
+          repeatNumber = value.split('')
+          console.log(repeatNumber)
 
+          for(var i=0; i < repeatNumber.length; i++){
+            var repeat = repeatNumber.indexOf( repeatNumber[i] ,  i+1)
+            if (repeat != -1){
+              console.log("el numero " + repeatNumber[i] + " esta repetido ")
+            }
+          }
         }
 
+        function validationNumber(){
+          return checkNumber || differentLength || repeat
+        }
+
+        if(validationNumber()) {
+          $(".user").addClass("has-error")
+          $("p").css("color", "red")
+        }else{
+          $(".user").removeClass("has-error")
+            number = calculation(numRandom, value)
+            $("table tr:first").after('<tr><td>' + value + '</td><td>' + number[0] + '</td><td>' + number[1] + '</td></tr>')
+        }
       }
     })
   })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // logic game
-//
-// function game (player, machine){
-//   var fijas = 0
-//   var picas = 0
-//
-//   for(var i = 0; i < player.length; i++){
-//     if(player[i] === machine[i]){
-//       fijas += 1
-//     }
-//   }
-//
-//   for (var i = 0; i < player.length; i++) {
-//   if (target.indexOf(machine[i]) > -1 && machine[i] !== player[i]) {
-//     picas +=1
-//     }
-//   }
-//
-//   if(fijas === 4) {
-//   $.confirm({
-//   title: 'Ganaste!',
-//   content: 'Quieres jugar de nuevo?',
-//   buttons: {
-//       confirm: reset,
-//       cancel: function () {
-//         //Do nothing
-//       },
-//     }
-//   });
-// }
-//
-//   return [picas, fijas]
-//   }
-//
-//
-//
-//
-//
-//
-//   $("document").ready(function(){
-//   startGame();
-//   });
-//
-//
-//   var startGame = function() {
-//   "aqui todo lo de crear el numero aleatorio"
-//
-//   validateNumber(number);
-//   }
-//
-//   var validateNumber = function(number) {
-//   array = number.split("")
-//   for(var i=0; i < array.length; i++){
-//   var repeat = array.indexOf( array[i] ,  i+1)
-//
-//      if (repeat != -1){
-//        console.log("el numero " + array[i] + "esta repetido ")
-//      }
-//   }
-//   }
-//   }
