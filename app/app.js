@@ -7,44 +7,90 @@ shuffle = function(o){ //v1.0
 
 var numRandom = shuffle(myArray).slice(0,4).toString().replace(/,/g, '');
 
-console.log (numRandom)
+console.log ("este es mi número random " + numRandom)
 
-$(document).ready(function(){
 
     $('input').keyup(function(e){
 
-        if(e.keyCode==13){
+        if(e.keyCode===13){
 
         var value = $('input').val()
 
         var checkNumber = isNaN(value)
 
-        var differentLength = value != 4
+        var differentLength = value.length != 4
 
-        var repeat = function(){
-          repeatNumber = value.split('')
-          console.log(repeatNumber)
+        var checkRepeat = value.split("").some(function(v,i,a){
+           return a.lastIndexOf(v)!=i;
+         });
 
-          for(var i=0; i < repeatNumber.length; i++){
-            var repeat = repeatNumber.indexOf( repeatNumber[i] ,  i+1)
-            if (repeat != -1){
-              console.log("el numero " + repeatNumber[i] + " esta repetido ")
-            }
+         // Set validation function
+   function validate(){
+     return checkNumber || differentLength || checkRepeat
+   }
+
+   function clean() {
+     $('table').val('');
+     $('table').focus();
+   }
+   // If validations don't pass add has-error class
+   if(validate()) {
+     $(".user").addClass("has-error")
+     $("p").css("color", "red")
+   }
+
+   // Else remove has-error class and invoke calculation function
+   else {
+     $(".user").removeClass("has-error")
+     $("p").css("color", "navy")
+     comparation = calculation(numRandom, value)
+
+     // Append result returned by calculation function
+     $("table").append('<tr><td>' + value + '</td><td>' + comparation[0] + '</td><td>' + comparation[1] + '</td></tr>')
+     clean()
+   }
+ }
+})
+      function calculation(entra, sale){
+        var picas = 0
+        var fijas = 0
+
+        for(var i = 0; i < entra.length; i++){
+          if (entra[i] === sale[i]){
+            fijas += 1
           }
         }
-
-        function validationNumber(){
-          return checkNumber || differentLength || repeat
+        for (var i = 0; i < entra.length; i++) {
+          if (entra.indexOf(sale[i]) > -1 && sale[i] !== entra[i]) {
+            picas +=1
+          }
+        }
+        if(fijas === 4) {
+          wonPlay()
+          won=1;
+          // alert("entro!")
         }
 
-        if(validationNumber()) {
-          $(".user").addClass("has-error")
-          $("p").css("color", "red")
-        }else{
-          $(".user").removeClass("has-error")
-            number = calculation(numRandom, value)
-            $("table tr:first").after('<tr><td>' + value + '</td><td>' + number[0] + '</td><td>' + number[1] + '</td></tr>')
-        }
+        return [picas, fijas]
       }
+
+    //javascript
+    js_won = null;
+
+    //jquery
+    $(function() {
+            function jq_won() {
+                $('.result.won').show();
+             }
+            js_won = jq_won;
+     })
+
+     //just js
+     function wonPlay() {
+           js_won(); //== call jquery function - just Reference is globally defined not function itself
+    }
+
+
+    $('.play').on('click', function(){
+      window.location = "https://avanegasp.github.io/rompecabezas1/";
     })
-  })
